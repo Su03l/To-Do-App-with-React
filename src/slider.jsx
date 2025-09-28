@@ -23,7 +23,7 @@ export default function Slider({ setView }) {
         height: "46%",
         borderRadius: 3,
         boxShadow: 6,
-        backgroundColor: "#1e1e1e",
+        backgroundColor: "#2a2a2a",
         color: "#fff",
       }}
     >

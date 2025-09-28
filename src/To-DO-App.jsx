@@ -31,7 +31,6 @@ export default function ToDoApp() {
     setAlertType(type);
     setAlertOpen(true);
   };
-
   const handleAlertClose = () => setAlertOpen(false);
 
   // Load tasks
@@ -59,10 +58,10 @@ export default function ToDoApp() {
       updated[editingIndex] = { ...updated[editingIndex], title, desc };
       setTasks(updated);
       setEditingIndex(null);
-      showAlert("Task updated!", "info"); // update → info
+      showAlert("Task updated!", "info");
     } else {
       setTasks([...tasks, { title, desc, completed: false }]);
-      showAlert("Task added!", "success"); // add → success
+      showAlert("Task added!", "success");
     }
 
     setTitle("");
@@ -87,7 +86,7 @@ export default function ToDoApp() {
     const deleted = tasks.filter((_, i) => i !== index);
     setDeletedTasks([...deletedTasks, tasks[index]]);
     setTasks(deleted);
-    showAlert("Task deleted!", "error"); // delete → error
+    showAlert("Task deleted!", "error");
   };
 
   const filteredTasks = () => {
@@ -100,13 +99,22 @@ export default function ToDoApp() {
 
   return (
     <div className="app-container">
-      {/* Slider on right */}
+      {/* Slider */}
       <Slider setView={setView} />
 
       {/* Main Content */}
       <div className="content">
-        <h1>To-Do App</h1>
+        {/* Title + image */}
+        <div className="title-with-img">
+          <h1>To-Do App</h1>
+          <img
+            src="https://cdn-icons-png.flaticon.com/512/190/190411.png"
+            alt="Tasks Illustration"
+            className="title-img"
+          />
+        </div>
 
+        {/* Add/Edit Form */}
         {view === "add" && (
           <div className="form-container">
             <TextField
@@ -118,15 +126,16 @@ export default function ToDoApp() {
               margin="dense"
               sx={{
                 "& .MuiInputLabel-root": { color: "#fff" },
+                "& .MuiInputLabel-root.Mui-focused": { color: "#fff" },
                 "& .MuiOutlinedInput-input": { color: "#fff" },
                 "& .MuiOutlinedInput-root": {
                   "& fieldset": { borderColor: "#ccc" },
                   "&:hover fieldset": { borderColor: "#ccc" },
-                  "&.Mui-focused fieldset": { borderColor: "#90caf9" },
+                  "&.Mui-focused fieldset": { borderColor: "#90f9b3ff" },
+                  borderRadius: 3,
                 },
               }}
             />
-
             <TextField
               label="Description"
               variant="outlined"
@@ -136,40 +145,54 @@ export default function ToDoApp() {
               margin="dense"
               sx={{
                 "& .MuiInputLabel-root": { color: "#fff" },
+                "& .MuiInputLabel-root.Mui-focused": { color: "#fff" },
                 "& .MuiOutlinedInput-input": { color: "#fff" },
                 "& .MuiOutlinedInput-root": {
                   "& fieldset": { borderColor: "#ccc" },
                   "&:hover fieldset": { borderColor: "#ccc" },
-                  "&.Mui-focused fieldset": { borderColor: "#90caf9" },
+                  "&.Mui-focused fieldset": { borderColor: "#90f9b3ff" },
+                  borderRadius: 3,
                 },
               }}
             />
 
             <Button
               variant="contained"
-              color="primary"
               fullWidth
               onClick={addOrUpdateTask}
-              style={{ marginTop: "10px" }}
+              sx={{
+                mt: 1,
+                backgroundColor: "#90f9b3",
+                fontWeight: "bold",
+                color: "#000",
+                borderRadius: 3,
+                "&:hover": { backgroundColor: "#75d89d" },
+              }}
             >
               {editingIndex !== null ? "Update Task" : "Add Task"}
             </Button>
           </div>
         )}
 
+        {/* Task List */}
         {view !== "add" && (
           <div className="task-list">
             {filteredTasks().map((task, index) => (
               <div key={index} className="task-card">
-                <div>
-                  <h3
-                    style={{
-                      textDecoration: task.completed ? "line-through" : "none",
-                    }}
-                  >
-                    {task.title}
-                  </h3>
-                  <p>{task.desc}</p>
+                <div className="task-info">
+                  <p>
+                    <strong style={{textDecoration: "underline" }}>Title:</strong>{" "}
+                    <span
+                      style={{
+                        textDecoration: task.completed ? "line-through" : "none",
+                      }}
+                    >
+                      {task.title}
+                    </span>
+                  </p>
+                  <p>
+                    <strong style={{textDecoration: "underline"}}>Desc:</strong> {task.desc}
+                  </p>
                 </div>
 
                 {view !== "deleted" && (
